@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>San Francisco Centre</title>
+    <link href="labels.css" rel="stylesheet" type="text/css" >
+    <style>
+
+        body {
+            background-color: #2f3437; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji",     Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+            /*outline: 1px dotted;*/
+            margin: 0;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+        }
+     	 
+      .center {
+            margin: 0%;
+            justify-content: right;
+            /*outline: 1px dotted;*/
+        }
+      
+     .right {
+            justify-content: flex-end;
+            text-align: right;
+      }
+        .clock {
+            margin: 28%;
+            padding: 10px 20px;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji",     Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        
+        h1 {
+            letter-spacing: 1.5px;
+            margin: 0;
+       
+        }
+        h5 {
+            margin: 0;
+            font-weight: normal;
+            font-size: 16px;
+        }
+      
+      .title {
+            color: #ffffff;  
+      }
+      .time {
+            font-variant-numeric: tabular-nums;
+            color: #ffffff;
+        }
+        
+        .date {
+            color: #ffffff;
+
+         }
+      
+      .operationTime {
+	        color: #AAA8A8;
+         }
+         
+        .currentTime {
+	        color: #636060;
+         }
+         
+       .openTime {
+            margin-right: 2%;
+        }
+        
+        .closeTime {
+  
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+    <div class="center">
+            <div class="clock">
+                <h5 class="title"></h5>
+                <h1 class="time">--:--</h1>
+                <h5 class="date">Sunday, Mar 28</h5>
+               
+               <div class="operationTime">
+                     <span class="openTime">Opens: 
+                         <span class="openTime" id="open">07:00 am</span>
+                     </span>
+                    <span class="closeTime">Closes: 
+                        <span class="closeTime" id="closed">07:00 pm</span>
+                    </span>
+             </div>
+
+                
+               <div class="operationTime">
+                     <span class="openTime">PST: 
+                         <span class="openTime" id="open">07:00 am</span>
+                     </span>
+                    <span class="closeTime">PST: 
+                        <span class="closeTime" id="closed">07:00 pm</span>
+                    </span>
+             </div>
+             <div class="operationTime">
+                    <span class="currentTime">System Time: </span>
+                    <span class="currentTime" id = "clock" onload="currentTime()"></span>
+             </div>
+             
+
+           </div>
+    </div>
+        
+
+
+
+
+<script>
+
+
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septmeber', 'October', 'November', 'December'];
+    const padLeft = (num) => {
+      if (String(num).length > 2) {
+        return num;
+      }
+      return String("00" + num).slice(-2);
+    }
+
+    setInterval(function() {
+      if("America/Los_Angeles") {
+        const today = new Date();
+        const timeInTZ = new Date(today.toLocaleString('en-US', {
+          timeZone: 'America/Los_Angeles'
+        }))
+
+        // time
+        let hours = timeInTZ.getHours();
+        const minutes = timeInTZ.getMinutes();
+        const seconds = timeInTZ.getSeconds();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        // date
+        const day = days[timeInTZ.getDay()];
+        const month = months[timeInTZ.getMonth()];
+        const dateNum = timeInTZ.getDate();
+
+
+        if (false) {
+          document.querySelector(".time").innerHTML = padLeft(hours)+":"+padLeft(minutes)+":"+padLeft(seconds)+" "+ampm;
+        } else {
+          document.querySelector(".time").innerHTML = padLeft(hours)+":"+padLeft(minutes)+" "+ampm;
+        }
+
+        if(true) {
+          document.querySelector(".date").innerHTML = day+", "+month+" "+padLeft(dateNum);
+        }
+      }
+    }, 1000)
+    
+  function currentTime() {
+  let date = new Date(); 
+  let hh = date.getHours();
+  let mm = date.getMinutes();
+  let ss = date.getSeconds();
+  let session = "am";
+
+  if(hh == 0){
+      hh = 12;
+  }
+  if(hh > 12){
+      hh = hh - 12;
+      session = "pm";
+   }
+
+   hh = (hh < 10) ? "0" + hh : hh;
+   mm = (mm < 10) ? "0" + mm : mm;
+   ss = (ss < 10) ? "0" + ss : ss;
+    
+   let time = hh + ":" + mm + ":" + ss + " " + session;
+
+  document.getElementById("clock").innerText = time; 
+  let t = setTimeout(function(){ currentTime() }, 1000);
+}
+currentTime();
+
+    
+    
+
+</script>
+
+</body>
+</html>
